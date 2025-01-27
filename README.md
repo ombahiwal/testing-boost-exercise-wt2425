@@ -16,7 +16,7 @@ A simple demo code to read dense matrices from files and solve linear systems wi
 - `LICENSE`: MIT license file
 - `src`: Source code
   - `Configuration.hpp/cpp`: A yaml configuration reader
-  - `MatrixSolver.hpp/cpp`: A convenience hull to solve dense matrix system by matrix decompositions
+  - `MatrixSolver.hpp/cpp`: A convenience hull to solve dense matrix systems by matrix decompositions
   - `matrixIO.hpp/cpp`: IO methods to read Eigen matrices from or write them to csv files
   - `main.cpp`: Main file
 - `tests`: Unit tests
