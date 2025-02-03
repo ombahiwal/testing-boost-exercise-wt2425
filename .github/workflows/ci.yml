@@ -30,7 +30,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             libeigen3-dev \
-            libyaml-cpp-dev
+            libyaml-cpp-dev \
+            libboost-all-dev
         
       - name: Set up CMake
         run: |
