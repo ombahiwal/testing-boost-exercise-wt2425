@@ -1,0 +1,33 @@
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Check formatting with clang-format
+        run: |
+          find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format --dry-run -Werror
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Set up CMake
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          cmake --build .
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Build and Run Tests
+        run: |
+          cd build
+          ctest --output-on-failure
+  
+
