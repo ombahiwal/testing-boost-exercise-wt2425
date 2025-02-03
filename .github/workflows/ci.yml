@@ -3,10 +3,10 @@ name: CI Workflow
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger on pull request to the main branch
+      - main
 
 jobs:
   style:
@@ -18,7 +18,7 @@ jobs:
         run: |
           find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format --dry-run -Werror
 
-   build_and_test:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
