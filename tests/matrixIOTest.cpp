@@ -1,7 +1,7 @@
 #define BOOST_TEST_DYN_LINK
+#include <Eigen/Dense>
 #include <boost/test/unit_test.hpp>
 #include "matrixIO.hpp"
-#include <Eigen/Dense>
 
 BOOST_AUTO_TEST_SUITE(MatrixIOTests)
 
