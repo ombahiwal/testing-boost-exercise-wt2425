@@ -1,0 +1,66 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Check formatting with clang-format
+        run: |
+          find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format --dry-run -Werror
+
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Check if Eigen3, yaml-cpp, and Boost are installed, and install them if necessary
+      - name: Install Dependencies (Eigen3, yaml-cpp, Boost)
+        run: |
+          # Check for Eigen3
+          if ! dpkg -s libeigen3-dev &>/dev/null; then
+            echo "Installing Eigen3..."
+            sudo apt-get install -y libeigen3-dev
+          else
+            echo "Eigen3 is already installed."
+          fi
+
+          # Check for yaml-cpp
+          if ! dpkg -s libyaml-cpp-dev &>/dev/null; then
+            echo "Installing yaml-cpp..."
+            sudo apt-get install -y libyaml-cpp-dev
+          else
+            echo "yaml-cpp is already installed."
+          fi
+
+          # Check for Boost
+          if ! dpkg -s libboost-all-dev &>/dev/null; then
+            echo "Installing Boost..."
+            sudo apt-get install -y libboost-all-dev
+          else
+            echo "Boost is already installed."
+          fi
+
+      # Set up CMake and build
+      - name: Set up CMake and Build
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          cmake --build .
+
+      # Run tests after build
+      - name: Run Tests
+        run: |
+          cd build
+          ctest --output-on-failure
