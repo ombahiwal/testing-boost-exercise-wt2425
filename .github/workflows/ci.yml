@@ -18,13 +18,13 @@ jobs:
         run: |
           find src tests -name "*.cpp" -o -name "*.hpp" | xargs clang-format --dry-run -Werror
 
-  build:
+   build_and_test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-        
-      # Install dependencies (Eigen3, yaml-cpp)
+
+      # Install dependencies (Eigen3, yaml-cpp, Boost)
       - name: Install Dependencies
         run: |
           sudo apt-get update
@@ -32,28 +32,17 @@ jobs:
             libeigen3-dev \
             libyaml-cpp-dev \
             libboost-all-dev
-        
-      - name: Set up CMake
+
+      # Set up CMake and build
+      - name: Set up CMake and Build
         run: |
           mkdir -p build
           cd build
           cmake ..
           cmake --build .
 
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libeigen3-dev \
-            libyaml-cpp-dev
-
-      - name: Build and Run Tests
+      # Run tests after build
+      - name: Run Tests
         run: |
           cd build
           ctest --output-on-failure
