@@ -3,12 +3,10 @@ name: CI Workflow
 on:
   push:
     branches:
-      - main
-      - extend-tests
+      - main  # Trigger on push to the main branch
   pull_request:
     branches:
-      - main  # This triggers the workflow on pull request to the main branch
-      - extend-tests
+      - main  # Trigger on pull request to the main branch
 
 jobs:
   style:
@@ -25,6 +23,15 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+        
+      # Install dependencies (Eigen3, yaml-cpp)
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libeigen3-dev \
+            libyaml-cpp-dev
+        
       - name: Set up CMake
         run: |
           mkdir -p build
@@ -37,6 +44,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libeigen3-dev \
+            libyaml-cpp-dev
+
       - name: Build and Run Tests
         run: |
           cd build
